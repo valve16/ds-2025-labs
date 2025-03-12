@@ -25,10 +25,10 @@ public class SummaryModel : PageModel
         string rankKey = "RANK-" + id;
         string similarityKey = "SIMILARITY-" + id;
 
-        string rankValue = _db.StringGet(rankKey);
-        string similarityValue = _db.StringGet(similarityKey);
+        string? rankValue = _db.StringGet(rankKey);
+        string? similarityValue = _db.StringGet(similarityKey);
 
-        Rank = double.TryParse(rankValue, out double rank) ? rank : 0.0;
-        Similarity = double.TryParse(similarityValue, out double similarity) ? similarity : 0.0;
+        Rank = double.TryParse(rankValue, out double rank) ? rank : 0;
+        Similarity = double.TryParse(similarityValue, out double similarity) ? similarity : 0;
     }
 }

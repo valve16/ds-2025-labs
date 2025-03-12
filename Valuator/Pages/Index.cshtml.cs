@@ -24,6 +24,10 @@ public class IndexModel : PageModel
     public IActionResult OnPost(string text)
     {
         _logger.LogDebug(text);
+        if (string.IsNullOrEmpty(text))
+        {
+            return Redirect("/");
+        }
 
         string id = Guid.NewGuid().ToString();
 
@@ -47,7 +51,7 @@ public class IndexModel : PageModel
     {
         if (string.IsNullOrEmpty(text))
         {
-            return 0.0;
+            return 0;
         }
 
         int nonAlphaCount = text.Count(c => !char.IsLetter(c));
@@ -68,10 +72,10 @@ public class IndexModel : PageModel
             string storedText = _db.StringGet(key);
             if (storedText == text)
             {
-                return 1.0;
+                return 1;
             }
         }
-        return 0.0;
+        return 0;
     }
 }
 
