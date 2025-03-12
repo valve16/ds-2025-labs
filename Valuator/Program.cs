@@ -15,6 +15,9 @@ public class Program
 
         var app = builder.Build();
 
+        var port = Environment.GetEnvironmentVariable("ASPNETCORE_URLS")?.Split(':').LastOrDefault() ?? "5000";
+
+        app.Logger.LogInformation("Application is running on port {Port}", port);
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
