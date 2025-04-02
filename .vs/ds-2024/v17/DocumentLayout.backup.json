@@ -35,7 +35,7 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Valuator",
+              "Title": "Valuator.csproj",
               "DocumentMoniker": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Valuator.csproj",
               "RelativeDocumentMoniker": "Valuator\\Valuator.csproj",
               "ToolTip": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Valuator.csproj",
@@ -55,8 +55,7 @@
               "RelativeToolTip": "Valuator\\Pages\\Index.cshtml.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAgwEUAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-26T17:31:30.331Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-26T17:31:30.331Z"
             },
             {
               "$type": "Document",
@@ -68,8 +67,7 @@
               "RelativeToolTip": "Valuator\\Pages\\Summary.cshtml.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAAA1wBgAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-26T17:31:29.423Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-26T17:31:29.423Z"
             },
             {
               "$type": "Document",
@@ -81,8 +79,7 @@
               "RelativeToolTip": "Valuator\\Pages\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-26T17:31:25.898Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-26T17:31:25.898Z"
             },
             {
               "$type": "Document",
@@ -94,8 +91,7 @@
               "RelativeToolTip": "Valuator\\Program.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-26T17:28:50.865Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-26T17:28:50.865Z"
             }
           ]
         }
