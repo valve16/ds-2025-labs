@@ -49,14 +49,29 @@ class Program
         var data = JsonSerializer.Deserialize<Message>(message);
 
         string id = data.Id;
-        string text = data.Text;
 
         // Вычисляем ранг
-        double rank = CalculateRank(text);
+        double rank = CalculateRank(db.StringGet(id));
         // Сохраняем результат в Redis
         db.StringSet("RANK-" + id, rank.ToString());
 
-        Console.WriteLine($"Processed: ID={id}, Text={text}, Rank={rank}");
+        // сообщение
+        var eventMessage = new
+        {
+            eventType = "RankCalculated",
+            id,
+            rank
+        };
+
+        string json = JsonSerializer.Serialize(eventMessage);
+        byte[] body = Encoding.UTF8.GetBytes(json);
+        await channel.BasicPublishAsync(
+            exchange: "valuator.events",
+            routingKey: string.Empty,
+            body: body
+        );
+
+        Console.WriteLine($"Processed: ID={id}, Rank={rank}");
         await channel.BasicAckAsync(eventArgs.DeliveryTag, false);
     }
 
@@ -78,11 +93,17 @@ class Program
             exclusive: false,
             autoDelete: false
         );
+
+        await channel.ExchangeDeclareAsync(
+            exchange: "valuator.events",
+            type: ExchangeType.Fanout,
+            durable: true,
+            autoDelete: false
+        );
     }
 
     private class Message
     {
         public string Id { get; set; }
-        public string Text { get; set; }
     }
 }

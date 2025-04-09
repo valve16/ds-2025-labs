@@ -9,6 +9,9 @@ start dotnet run --urls "http://0.0.0.0:5002"
 cd ../RankCalculator/RankCalculator
 start dotnet run
 
+cd ../../EventsLogger/EventsLogger
+start dotnet run
+
 pause
 
 cd D:\nginx\
