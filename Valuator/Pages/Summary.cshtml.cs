@@ -1,17 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 namespace Valuator.Pages;
 
 public class SummaryModel : PageModel
 {
     private readonly ILogger<SummaryModel> _logger;
-    private readonly IDatabase _db;
+    private readonly IConnectionMultiplexer _mainRedis;
+    private readonly IDictionary<string, IConnectionMultiplexer> _multiplexers;
 
-    public SummaryModel(ILogger<SummaryModel> logger, IConnectionMultiplexer redis)
+    public SummaryModel(ILogger<SummaryModel> logger,
+                        IConnectionMultiplexer mainRedis,
+                        IDictionary<string, IConnectionMultiplexer> multiplexers)
     {
         _logger = logger;
-        _db = redis.GetDatabase();
+        _mainRedis = mainRedis;
+        _multiplexers = multiplexers;
     }
 
     public double Rank { get; set; }
@@ -21,12 +26,23 @@ public class SummaryModel : PageModel
     {
         _logger.LogDebug(id);
 
+        var mainDb = _mainRedis.GetDatabase();
+        string? region = mainDb.StringGet("ID-" + id);
+
+        if (string.IsNullOrEmpty(region))
+        {
+            Rank = -1;
+            Similarity = 0;
+            _logger.LogWarning($"Region not found for ID: {id}");
+            return;
+        }
         // TODO: (pa1) проинициализировать свойства Rank и Similarity значениями из БД (Redis)
+        var segmentDb = GetSegmentDatabase(region);
         string rankKey = "RANK-" + id;
         string similarityKey = "SIMILARITY-" + id;
 
-        string? rankValue = _db.StringGet(rankKey);
-        string? similarityValue = _db.StringGet(similarityKey);
+        string? rankValue = segmentDb.StringGet(rankKey);
+        string? similarityValue = segmentDb.StringGet(similarityKey);
 
         if (rankValue != null)
         {
@@ -38,8 +54,16 @@ public class SummaryModel : PageModel
         }
 
         Similarity = double.TryParse(similarityValue, out double similarity) ? similarity : 0;
+        _logger.LogInformation($"LOOKUP: {id}, {region}");
     }
-
+    private IDatabase GetSegmentDatabase(string region)
+    {
+        if (_multiplexers.TryGetValue(region, out var multiplexer))
+        {
+            return multiplexer.GetDatabase();
+        }
+        throw new ArgumentException($"No Redis connection found for region: {region}");
+    }
 
 }
 

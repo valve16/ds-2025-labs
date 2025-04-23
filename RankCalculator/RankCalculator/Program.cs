@@ -3,13 +3,36 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using StackExchange.Redis;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RankCalculator;
 
 class Program
 {
-    private static readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
-    private static readonly IDatabase db = redis.GetDatabase();
+    private static readonly ConnectionMultiplexer mainRedis = ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_MAIN") ?? "localhost:6000");
+    private static readonly IServiceProvider serviceProvider = ConfigureServices();
+
+    private static IServiceProvider ConfigureServices()
+    {
+        var services = new ServiceCollection();
+        services.AddSingleton<IConnectionMultiplexer>(mainRedis);
+
+        // Регистрация сегментированных подключений Redis по регионам
+        services.AddSingleton<IDictionary<string, IConnectionMultiplexer>>(sp =>
+        {
+            return new Dictionary<string, IConnectionMultiplexer>
+            {
+                { "RU", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_RU") ?? "localhost:6001") },
+                { "EU", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_EU") ?? "localhost:6002") },
+                { "ASIA", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_ASIA") ?? "localhost:6003") }
+            };
+        });
+
+        return services.BuildServiceProvider();
+    }
+
+    //private static readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
+    //private static readonly IDatabase db = redis.GetDatabase();
     private const string QueueName = "valuator.processing.rank";
 
     public static async Task Main(string[] args)
@@ -50,10 +73,15 @@ class Program
 
         string id = data.Id;
 
+        var mainDb = mainRedis.GetDatabase();
+        string region = mainDb.StringGet("ID-" + id);
+
+        var segmentDb = GetSegmentDatabase(region);
+
         // Вычисляем ранг
-        double rank = CalculateRank(db.StringGet("TEXT-" + id));
+        double rank = CalculateRank(segmentDb.StringGet("TEXT-" + id));
         // Сохраняем результат в Redis
-        db.StringSet("RANK-" + id, rank.ToString());
+        segmentDb.StringSet("RANK-" + id, rank.ToString());
 
         // сообщение
         var eventMessage = new
@@ -72,6 +100,7 @@ class Program
         );
 
         Console.WriteLine($"Processed: ID={id}, Rank={rank}");
+        Console.WriteLine($"LOOKUP: {id}, {region}");
         await channel.BasicAckAsync(eventArgs.DeliveryTag, false);
     }
 
@@ -101,7 +130,15 @@ class Program
             autoDelete: false
         );
     }
-
+    private static IDatabase GetSegmentDatabase(string region)
+    {
+        var multiplexers = serviceProvider.GetRequiredService<IDictionary<string, IConnectionMultiplexer>>();
+        if (multiplexers.TryGetValue(region, out var multiplexer))
+        {
+            return multiplexer.GetDatabase();
+        }
+        throw new ArgumentException($"No Redis connection found for region: {region}");
+    }
     private class Message
     {
         public string Id { get; set; }

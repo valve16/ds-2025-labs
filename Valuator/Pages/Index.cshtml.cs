@@ -4,22 +4,26 @@ using StackExchange.Redis;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
+
 
 
 namespace Valuator.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly IDatabase _db;
+    //private readonly IDatabase _db;
     private readonly ILogger<IndexModel> _logger;
     private const string ExchangeName = "valuator.processing.rank";
     private const string QueueName = "valuator.processing.rank";
 
-    public IndexModel(ILogger<IndexModel> logger, IConnectionMultiplexer redis)
+    private readonly IConnectionMultiplexer _mainRedis;
+    private readonly IDictionary<string, IConnectionMultiplexer> _multiplexers;
+
+    public IndexModel(ILogger<IndexModel> logger, IConnectionMultiplexer mainRedis, IDictionary<string, IConnectionMultiplexer> multiplexers)
     {
         _logger = logger;
-        _db = redis.GetDatabase();
+        _mainRedis = mainRedis;
+        _multiplexers = multiplexers;
     }
 
     public void OnGet()
@@ -27,7 +31,7 @@ public class IndexModel : PageModel
 
     }
 
-    public async Task<IActionResult> OnPostAsync(string text)
+    public async Task<IActionResult> OnPostAsync(string text, string country)
     {
         _logger.LogDebug(text);
         if (string.IsNullOrEmpty(text))
@@ -36,17 +40,26 @@ public class IndexModel : PageModel
         }
 
         string id = Guid.NewGuid().ToString();
+        string region = GetRegionByCountry(country);
+
+        // Сохранение ShardKey в центральной базе данных
+        var mainDb = _mainRedis.GetDatabase();
+        mainDb.StringSet($"ID-{id}", region);
+
 
         // Сохранение текста в Redis
+        var segmentDb = GetSegmentDatabase(region);
         string textKey = "TEXT-" + id;
-        _db.StringSet(textKey, text);
+        segmentDb.StringSet(textKey, text);
+
+        _logger.LogInformation($"LOOKUP: {id}, {region}");
 
         // Отправка задания в RabbitMQ
         await SendMessageToRabbitMQAsync(id);
 
         string similarityKey = "SIMILARITY-" + id;
-        double similarity = CheckSimilarity(text, id);
-        _db.StringSet(similarityKey, similarity.ToString());
+        double similarity = CheckSimilarity(text, id, region);
+        segmentDb.StringSet(similarityKey, similarity.ToString());
 
         // Публикация события SimilarityCalculated
         var factory = new ConnectionFactory { HostName = "localhost" };
@@ -76,6 +89,25 @@ public class IndexModel : PageModel
 
         // Перенаправление на страницу summary
         return Redirect($"summary?id={id}");
+    }
+
+    private string GetRegionByCountry(string country)
+    {
+        return country switch
+        {
+            "Russia" => "RU",
+            "France" => "EU",
+            "Germany" => "EU",
+            "UAE" => "ASIA",
+            "India" => "ASIA",
+            _ => throw new ArgumentException("Недопустимая страна")
+        };
+    }
+
+    private IDatabase GetSegmentDatabase(string region)
+    {
+        var multiplexer = _multiplexers[region];
+        return multiplexer.GetDatabase();
     }
 
     private async Task SendMessageToRabbitMQAsync(string id)
@@ -125,9 +157,10 @@ public class IndexModel : PageModel
 
     }
 
-    private double CheckSimilarity(string text, string currentId)
+    private double CheckSimilarity(string text, string currentId, string region)
     {
-        var server = _db.Multiplexer.GetServer(_db.Multiplexer.GetEndPoints()[0]);
+        var segmentDb = GetSegmentDatabase(region);
+        var server = segmentDb.Multiplexer.GetServer(segmentDb.Multiplexer.GetEndPoints()[0]);
         var keys = server.Keys(pattern: "TEXT-*");
         //_logger.LogInformation(" {keys}", keys);
         foreach (var key in keys)
@@ -136,7 +169,7 @@ public class IndexModel : PageModel
             {
                 continue; // Пропускаем текущий ключ
             }
-            string storedText = _db.StringGet(key);
+            string storedText = segmentDb.StringGet(key);
             if (storedText == text)
             {
                 return 1;

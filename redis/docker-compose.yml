@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  redis-main:
+    image: redis:latest
+    container_name: redis-main
+    ports:
+      - "6000:6379"
+    volumes:
+      - redis-main-data:/data
+    networks:
+      - redis-network
+
+  redis-ru:
+    image: redis:latest
+    container_name: redis-ru
+    ports:
+      - "6001:6379"
+    volumes:
+      - redis-ru-data:/data
+    networks:
+      - redis-network
+
+  redis-eu:
+    image: redis:latest
+    container_name: redis-eu
+    ports:
+      - "6002:6379"
+    volumes:
+      - redis-eu-data:/data
+    networks:
+      - redis-network
+
+  redis-asia:
+    image: redis:latest
+    container_name: redis-asia
+    ports:
+      - "6003:6379"
+    volumes:
+      - redis-asia-data:/data
+    networks:
+      - redis-network
+
+volumes:
+  redis-main-data:
+  redis-ru-data:
+  redis-eu-data:
+  redis-asia-data:
+
+networks:
+  redis-network:
+    driver: bridge
