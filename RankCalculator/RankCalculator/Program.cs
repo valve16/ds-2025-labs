@@ -51,7 +51,7 @@ class Program
         string id = data.Id;
 
         // Вычисляем ранг
-        double rank = CalculateRank(db.StringGet(id));
+        double rank = CalculateRank(db.StringGet("TEXT-" + id));
         // Сохраняем результат в Redis
         db.StringSet("RANK-" + id, rank.ToString());
 
