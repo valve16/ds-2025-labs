@@ -1,0 +1,102 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|d:\\\u043F\u0433\u0442\u0443\\ds-2025\\valuator\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|solutionrelative:valuator\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|d:\\\u043F\u0433\u0442\u0443\\ds-2025\\valuator\\valuator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|solutionrelative:valuator\\valuator.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|d:\\\u043F\u0433\u0442\u0443\\ds-2025\\valuator\\pages\\summary.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|solutionrelative:valuator\\pages\\summary.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|d:\\\u043F\u0433\u0442\u0443\\ds-2025\\valuator\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|solutionrelative:valuator\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|d:\\\u043F\u0433\u0442\u0443\\ds-2025\\valuator\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BB3B7AF3-09CB-8246-6EE6-CF385AAB4AA1}|Valuator\\Valuator.csproj|solutionrelative:valuator\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Valuator.csproj",
+              "DocumentMoniker": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Valuator.csproj",
+              "RelativeDocumentMoniker": "Valuator\\Valuator.csproj",
+              "ToolTip": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Valuator.csproj",
+              "RelativeToolTip": "Valuator\\Valuator.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-03-12T12:46:00.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Pages\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "Valuator\\Pages\\Index.cshtml.cs",
+              "ToolTip": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Pages\\Index.cshtml.cs",
+              "RelativeToolTip": "Valuator\\Pages\\Index.cshtml.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwEUAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T17:31:30.331Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Summary.cshtml.cs",
+              "DocumentMoniker": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Pages\\Summary.cshtml.cs",
+              "RelativeDocumentMoniker": "Valuator\\Pages\\Summary.cshtml.cs",
+              "ToolTip": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Pages\\Summary.cshtml.cs",
+              "RelativeToolTip": "Valuator\\Pages\\Summary.cshtml.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA1wBgAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T17:31:29.423Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Pages\\Index.cshtml",
+              "RelativeDocumentMoniker": "Valuator\\Pages\\Index.cshtml",
+              "ToolTip": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Pages\\Index.cshtml",
+              "RelativeToolTip": "Valuator\\Pages\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-26T17:31:25.898Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Program.cs",
+              "RelativeDocumentMoniker": "Valuator\\Program.cs",
+              "ToolTip": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\Valuator\\Program.cs",
+              "RelativeToolTip": "Valuator\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T17:28:50.865Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
