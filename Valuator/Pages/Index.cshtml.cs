@@ -46,9 +46,9 @@ public class IndexModel : PageModel
         var mainDb = _mainRedis.GetDatabase();
         mainDb.StringSet($"ID-{id}", region);
 
+        var segmentDb = GetSegmentDatabase(region);
 
         // Сохранение текста в Redis
-        var segmentDb = GetSegmentDatabase(region);
         string textKey = "TEXT-" + id;
         segmentDb.StringSet(textKey, text);
 
@@ -58,7 +58,7 @@ public class IndexModel : PageModel
         await SendMessageToRabbitMQAsync(id);
 
         string similarityKey = "SIMILARITY-" + id;
-        double similarity = CheckSimilarity(text, id, region);
+        double similarity = CheckSimilarity(text, id, segmentDb);
         segmentDb.StringSet(similarityKey, similarity.ToString());
 
         // Публикация события SimilarityCalculated
@@ -157,9 +157,8 @@ public class IndexModel : PageModel
 
     }
 
-    private double CheckSimilarity(string text, string currentId, string region)
+    private double CheckSimilarity(string text, string currentId, StackExchange.Redis.IDatabase segmentDb)
     {
-        var segmentDb = GetSegmentDatabase(region);
         var server = segmentDb.Multiplexer.GetServer(segmentDb.Multiplexer.GetEndPoints()[0]);
         var keys = server.Keys(pattern: "TEXT-*");
         //_logger.LogInformation(" {keys}", keys);

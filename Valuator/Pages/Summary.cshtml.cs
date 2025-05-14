@@ -38,11 +38,9 @@ public class SummaryModel : PageModel
         }
         // TODO: (pa1) проинициализировать свойства Rank и Similarity значениями из БД (Redis)
         var segmentDb = GetSegmentDatabase(region);
-        string rankKey = "RANK-" + id;
-        string similarityKey = "SIMILARITY-" + id;
 
-        string? rankValue = segmentDb.StringGet(rankKey);
-        string? similarityValue = segmentDb.StringGet(similarityKey);
+        string? rankValue = segmentDb.StringGet("RANK-" + id);
+        string? similarityValue = segmentDb.StringGet("SIMILARITY-" + id);
 
         if (rankValue != null)
         {
