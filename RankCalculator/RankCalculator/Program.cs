@@ -9,7 +9,7 @@ namespace RankCalculator;
 
 class Program
 {
-    private static readonly ConnectionMultiplexer mainRedis = ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_MAIN") ?? "localhost:6000");
+    private static readonly ConnectionMultiplexer mainRedis = ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_MAIN") /*?? "localhost:6000"*/);
     private static readonly IServiceProvider serviceProvider = ConfigureServices();
 
     private static IServiceProvider ConfigureServices()
@@ -22,9 +22,9 @@ class Program
         {
             return new Dictionary<string, IConnectionMultiplexer>
             {
-                { "RU", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_RU") ?? "localhost:6001") },
-                { "EU", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_EU") ?? "localhost:6002") },
-                { "ASIA", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_ASIA") ?? "localhost:6003") }
+                { "RU", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_RU")/* ?? "localhost:6001"*/) },
+                { "EU", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_EU") /*?? "localhost:6002"*/) },
+                { "ASIA", ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_ASIA") /*?? "localhost:6003"*/) }
             };
         });
 
