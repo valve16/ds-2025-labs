@@ -11,10 +11,10 @@ public class Program
 
 
         // Чтение переменных окружения
-        var mainDbHost = Environment.GetEnvironmentVariable("DB_MAIN") ?? "localhost:6000";
-        var ruDbHost = Environment.GetEnvironmentVariable("DB_RU") ?? "localhost:6001";
-        var euDbHost = Environment.GetEnvironmentVariable("DB_EU") ?? "localhost:6002";
-        var asiaDbHost = Environment.GetEnvironmentVariable("DB_ASIA") ?? "localhost:6003";
+        var mainDbHost = Environment.GetEnvironmentVariable("DB_MAIN")/* ?? "localhost:6000"*/;
+        var ruDbHost = Environment.GetEnvironmentVariable("DB_RU")/* ?? "localhost:6001"*/;
+        var euDbHost = Environment.GetEnvironmentVariable("DB_EU")/* ?? "localhost:6002"*/;
+        var asiaDbHost = Environment.GetEnvironmentVariable("DB_ASIA") /*?? "localhost:6003"*/;
 
         // Регистрация главного подключения Redis (DB_MAIN)
         builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(mainDbHost));
