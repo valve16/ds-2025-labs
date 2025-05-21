@@ -4,10 +4,11 @@ using RabbitMQ.Client.Events;
 using StackExchange.Redis;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 
 namespace RankCalculator;
 
-class Program
+public class Program
 {
     private static readonly ConnectionMultiplexer mainRedis = ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("DB_MAIN") /*?? "localhost:6000"*/);
     private static readonly IServiceProvider serviceProvider = ConfigureServices();
@@ -104,14 +105,30 @@ class Program
         await channel.BasicAckAsync(eventArgs.DeliveryTag, false);
     }
 
-    private static double CalculateRank(string text)
+    public static double CalculateRank(string text)
     {
         if (string.IsNullOrEmpty(text))
         {
             return 0;
         }
-        int nonAlphaCount = text.Count(c => !char.IsLetter(c));
-        return (double)nonAlphaCount / text.Length;
+
+        var textElements = StringInfo.GetTextElementEnumerator(text);
+        int totalSymbols = 0;
+        int nonAlphaCount = 0;
+
+        //int nonAlphaCount = text.Count(c => !char.IsLetter(c));
+
+        while (textElements.MoveNext())
+        {
+            string element = textElements.GetTextElement();
+            totalSymbols++;
+            if (element.Length == 1 && char.IsLetter(element[0]))
+            {
+                continue; 
+            }
+            nonAlphaCount++;
+        }
+        return (double)nonAlphaCount / totalSymbols;
     }
 
     private static async Task DeclareTopologyAsync(IChannel channel)
