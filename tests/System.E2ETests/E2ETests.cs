@@ -10,7 +10,7 @@ namespace System.E2ETests
 
         public ValuatorE2ETests()
         {
-            // Инициализация WebDriver (Chrome)
+            // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ WebDriver (Chrome)
             driver = new ChromeDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
@@ -19,7 +19,7 @@ namespace System.E2ETests
         [InlineData("a1", 0.5)]
         [InlineData("Hello", 0)]
         [InlineData("ABCD1234", 0.5)]
-        [InlineData("ABСD12", 2.0 / 6)]
+        [InlineData("ABРЎD12", 2.0 / 6)]
         public void TestSubmitTextAndCheckRank(string inputText, double expectedRank)
         {
             driver.Navigate().GoToUrl("http://localhost:5001/");
@@ -34,11 +34,11 @@ namespace System.E2ETests
             var submitButton = driver.FindElement(By.CssSelector("input[type=submit]"));
             submitButton.Click();
 
-            //Thread.Sleep(2000); // Подождать 2 секунды перед проверкой
+            //Thread.Sleep(2000); // РџРѕРґРѕР¶РґР°С‚СЊ 2 СЃРµРєСѓРЅРґС‹ РїРµСЂРµРґ РїСЂРѕРІРµСЂРєРѕР№
             //driver.Navigate().Refresh();
             //for (int i = 0; i < 5; i++)
             //{
-            //    if (driver.FindElement(By.TagName("p")).Text == "Оценка содержания не завершена")
+            //    if (driver.FindElement(By.TagName("p")).Text == "РћС†РµРЅРєР° СЃРѕРґРµСЂР¶Р°РЅРёСЏ РЅРµ Р·Р°РІРµСЂС€РµРЅР°")
             //    {
             //        driver.Navigate().Refresh();
             //        Thread.Sleep(500);
@@ -49,12 +49,12 @@ namespace System.E2ETests
             //    }    
             //}
             WebDriverWait wait = new(driver, TimeSpan.FromSeconds(5));
-            wait.Until(d => d.FindElement(By.TagName("p")).Text != "Оценка содержания не завершена");
+            wait.Until(d => d.FindElement(By.TagName("p")).Text != "РћС†РµРЅРєР° СЃРѕРґРµСЂР¶Р°РЅРёСЏ РЅРµ Р·Р°РІРµСЂС€РµРЅР°");
 
 
-            //Получение значения rank из текста 
+            //РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ rank РёР· С‚РµРєСЃС‚Р° 
             var rankElement = driver.FindElement(By.TagName("p"));
-            string rankText = rankElement.Text.Replace("Оценка содержания: ", "").Trim();
+            string rankText = rankElement.Text.Replace("РћС†РµРЅРєР° СЃРѕРґРµСЂР¶Р°РЅРёСЏ: ", "").Trim();
             rankText = rankText.Replace(",", ".");
             double rank = double.Parse(rankText, System.Globalization.CultureInfo.InvariantCulture);
 
