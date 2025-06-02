@@ -16,7 +16,7 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorPages();
 
-        // àóòåíòèôèêàöèÿ ñ ïîìîùüþ êóêè
+        // Ð°ÑƒÑ‚ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ†Ð¸Ñ Ñ Ð¿Ð¾Ð¼Ð¾Ñ‰ÑŒÑŽ ÐºÑƒÐºÐ¸
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {

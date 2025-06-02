@@ -32,30 +32,30 @@ namespace Valuator.Pages
         {
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
-                ModelState.AddModelError(string.Empty, "Требуется имя пользователя и пароль");
+                ModelState.AddModelError(string.Empty, "РўСЂРµР±СѓРµС‚СЃСЏ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Рё РїР°СЂРѕР»СЊ");
                 return Page();
             }
             string userKey = "USER-" + Username;
 
             string? storedUser = _db.StringGet(userKey);
 
-            // Проверяем существование пользователя
+            // РџСЂРѕРІРµСЂСЏРµРј СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
             if (string.IsNullOrEmpty(storedUser))
             {
-                ModelState.AddModelError(string.Empty, "Неверное имя пользователя или пароль");
+                ModelState.AddModelError(string.Empty, "РќРµРІРµСЂРЅРѕРµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР»Рё РїР°СЂРѕР»СЊ");
                 return Page();
             }
 
-            // Хешируем введенный пароль и сравниваем с сохраненным хешем
+            // РҐРµС€РёСЂСѓРµРј РІРІРµРґРµРЅРЅС‹Р№ РїР°СЂРѕР»СЊ Рё СЃСЂР°РІРЅРёРІР°РµРј СЃ СЃРѕС…СЂР°РЅРµРЅРЅС‹Рј С…РµС€РµРј
             string inputHash = HashPassword(Password);
 
             if (inputHash != storedUser)
             {
-                ModelState.AddModelError(string.Empty, "Неверное имя пользователя или пароль");
+                ModelState.AddModelError(string.Empty, "РќРµРІРµСЂРЅРѕРµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР»Рё РїР°СЂРѕР»СЊ");
                 return Page();
             }
 
-            // Создаем куки аутентификации
+            // РЎРѕР·РґР°РµРј РєСѓРєРё Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, Username),
@@ -63,7 +63,7 @@ namespace Valuator.Pages
 
             var authProperties = new AuthenticationProperties
             {
-                IsPersistent = true // Куки будут сохраняться после закрытия браузера
+                IsPersistent = true // РљСѓРєРё Р±СѓРґСѓС‚ СЃРѕС…СЂР°РЅСЏС‚СЊСЃСЏ РїРѕСЃР»Рµ Р·Р°РєСЂС‹С‚РёСЏ Р±СЂР°СѓР·РµСЂР°
             };
 
 

@@ -42,17 +42,17 @@ namespace Valuator.Pages
 
             if (_db.StringGet(userKey).HasValue)
             {
-                ModelState.AddModelError(string.Empty, "Имя уже существует");
+                ModelState.AddModelError(string.Empty, "РРјСЏ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
                 return Page();
             }
 
-            // Хешируем пароль
+            // РҐРµС€РёСЂСѓРµРј РїР°СЂРѕР»СЊ
             string hashedPassword = HashPassword(Password);
 
-            // Сохраняем в Redis: ключ - имя пользователя, значение - хеш пароля
+            // РЎРѕС…СЂР°РЅСЏРµРј РІ Redis: РєР»СЋС‡ - РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, Р·РЅР°С‡РµРЅРёРµ - С…РµС€ РїР°СЂРѕР»СЏ
             _db.StringSet(userKey, hashedPassword);
 
-            // Создаем куки для аутентификации
+            // РЎРѕР·РґР°РµРј РєСѓРєРё РґР»СЏ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРё
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, Username),
