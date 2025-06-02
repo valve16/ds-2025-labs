@@ -3,6 +3,10 @@ services:
     image: rabbitmq:3.13.7
     container_name: rabbitmq-pa3
     hostname: rabbitmq-pa3
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password2
+      RABBITMQ_DEFAULT_VHOST: /
     volumes:
       - rabbitmq_pa3_data:/var/lib/rabbitmq
     ports:

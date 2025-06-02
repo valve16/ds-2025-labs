@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StackExchange.Redis;
 namespace Valuator.Pages;
 
+[Authorize]
 public class SummaryModel : PageModel
 {
     private readonly ILogger<SummaryModel> _logger;
@@ -17,9 +19,20 @@ public class SummaryModel : PageModel
     public double Rank { get; set; }
     public double Similarity { get; set; }
 
-    public void OnGet(string id)
+    public IActionResult OnGet(string id)
     {
         _logger.LogDebug(id);
+        if (!User.Identity.IsAuthenticated)
+        {
+            return RedirectToPage("/Login");
+        }
+
+        string userKey = "USER-" + id;
+        string? author = _db.StringGet(userKey);
+        if (author != User.Identity.Name)
+        {
+            return Forbid(); // 403 - доступ запрещен
+        }
 
         // TODO: (pa1) проинициализировать свойства Rank и Similarity значениями из БД (Redis)
         string rankKey = "RANK-" + id;
@@ -38,6 +51,7 @@ public class SummaryModel : PageModel
         }
 
         Similarity = double.TryParse(similarityValue, out double similarity) ? similarity : 0;
+        return Page();
     }
 
 

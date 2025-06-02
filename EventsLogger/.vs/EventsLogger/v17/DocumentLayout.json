@@ -23,15 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "EventsLogger",
+              "Title": "EventsLogger.csproj",
               "DocumentMoniker": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\EventsLogger\\EventsLogger\\EventsLogger.csproj",
               "RelativeDocumentMoniker": "EventsLogger\\EventsLogger.csproj",
               "ToolTip": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\EventsLogger\\EventsLogger\\EventsLogger.csproj",
               "RelativeToolTip": "EventsLogger\\EventsLogger.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-09T20:27:07.882Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-09T20:27:07.882Z"
             },
             {
               "$type": "Document",
@@ -41,7 +40,7 @@
               "RelativeDocumentMoniker": "EventsLogger\\Program.cs",
               "ToolTip": "D:\\\u041F\u0413\u0422\u0423\\ds-2025\\EventsLogger\\EventsLogger\\Program.cs",
               "RelativeToolTip": "EventsLogger\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-09T20:26:31.119Z",
               "EditorCaption": ""

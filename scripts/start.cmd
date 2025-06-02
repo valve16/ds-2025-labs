@@ -1,6 +1,11 @@
 @echo off
 chcp 1251 > nul
 
+set REDIS_PASS=password1
+
+set RABBIT_USER=admin
+set RABBIT_PASS=password2
+
 cd ../Valuator
 start dotnet run --urls "http://0.0.0.0:5001"
 

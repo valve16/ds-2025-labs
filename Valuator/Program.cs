@@ -1,4 +1,8 @@
 using StackExchange.Redis;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Valuator;
 
@@ -8,10 +12,27 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+
         // Add services to the container.
         builder.Services.AddRazorPages();
 
-        builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost:6379"));
+        // аутентификация с помощью куки
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Login";
+                options.AccessDeniedPath = "/Login";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            });
+        builder.Services.AddAuthorization();
+
+        var redisPassword = Environment.GetEnvironmentVariable("REDIS_PASS");
+        var redisOptions = new ConfigurationOptions
+        {
+            EndPoints = { "localhost:6379" },
+            Password = redisPassword,
+        };
+        builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisOptions));
 
         var app = builder.Build();
 
@@ -27,6 +48,7 @@ public class Program
 
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapRazorPages();

@@ -35,11 +35,21 @@ public class IndexModel : PageModel
             return Redirect("/");
         }
 
+        string? username = User.Identity.Name;
+
+        if (!User.Identity.IsAuthenticated)
+        {
+            return RedirectToPage("/Login");
+        }
+
         string id = Guid.NewGuid().ToString();
 
         // Сохранение текста в Redis
         string textKey = "TEXT-" + id;
         _db.StringSet(textKey, text);
+
+        string userKey = "USER-" + id;
+        _db.StringSet(userKey, username);
 
         // Отправка задания в RabbitMQ
         await SendMessageToRabbitMQAsync(id);
@@ -80,7 +90,12 @@ public class IndexModel : PageModel
 
     private async Task SendMessageToRabbitMQAsync(string id)
     {
-        var factory = new ConnectionFactory { HostName = "localhost" };
+        var factory = new ConnectionFactory
+        {
+            HostName = "localhost",
+            UserName = Environment.GetEnvironmentVariable("RABBIT_USER") ?? "",
+            Password = Environment.GetEnvironmentVariable("RABBIT_PASS") ?? ""
+        };
         await using IConnection connection = await factory.CreateConnectionAsync();
         await using IChannel channel = await connection.CreateChannelAsync();
 
@@ -136,7 +151,7 @@ public class IndexModel : PageModel
             {
                 continue; // Пропускаем текущий ключ
             }
-            string storedText = _db.StringGet(key);
+            string? storedText = _db.StringGet(key);
             if (storedText == text)
             {
                 return 1;

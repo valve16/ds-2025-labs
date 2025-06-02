@@ -2,7 +2,9 @@ chcp 1251 > nul
 
 taskkill /F /IM dotnet.exe
 
-cd D:\nginx
-nginx -s stop
+taskkill /F /IM nginx.exe
+
+REM cd ../../nginx
+REM nginx -s stop
 
 pause

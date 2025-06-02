@@ -8,7 +8,13 @@ namespace RankCalculator;
 
 class Program
 {
-    private static readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
+    private static readonly string redisPassword = Environment.GetEnvironmentVariable("REDIS_PASS");
+    private static readonly ConfigurationOptions redisOptions = new()
+    {
+        EndPoints = { "localhost:6379" },
+        Password = redisPassword
+    };
+    private static readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(redisOptions);
     private static readonly IDatabase db = redis.GetDatabase();
     private const string QueueName = "valuator.processing.rank";
 
@@ -16,7 +22,12 @@ class Program
     {
         Console.WriteLine("RankCalculator started");
 
-        var factory = new ConnectionFactory { HostName = "localhost" };
+        var factory = new ConnectionFactory
+        {
+            HostName = "localhost",
+            UserName = Environment.GetEnvironmentVariable("RABBIT_USER") ?? "",
+            Password = Environment.GetEnvironmentVariable("RABBIT_PASS") ?? ""
+        };
         await using IConnection connection = await factory.CreateConnectionAsync();
         await using IChannel channel = await connection.CreateChannelAsync();
 
@@ -45,6 +56,7 @@ class Program
     private static async Task ConsumeAsync(IChannel channel, BasicDeliverEventArgs eventArgs)
     {
         Console.WriteLine("Consuming");
+        Console.WriteLine(Environment.GetEnvironmentVariable("RABBIT_PASS"));
         string message = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
         var data = JsonSerializer.Deserialize<Message>(message);
 
